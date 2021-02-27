@@ -1,8 +1,17 @@
 # Typescript Bot
 This is a discord bot template made with Typescript.
 
-## NPM Commands
-- **Installing packages:** `npm install`
-- **Building project:** `npm run build`
-- **Starting project:** `npm run start`
-- **Starting project <ins>as dev</ins>:** `npm run dev`
+## Installation
+```
+yarn install
+```
+
+## Configuration
+You can find the configurations at  `src/core/client.ts`. Don't forget to change the config before starting the bot.
+
+
+## Scripts
+- `yarn clean` **➜** *Deletes the **dist** folder*
+- `yarn build` **➜** *Builds the project*
+- `yarn start` **➜** *Stars the project* **(You must build the project before starting)**
+- `yarn dev` **➜** *Starts the project as dev*

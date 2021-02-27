@@ -2,7 +2,7 @@ import { Client, Collection } from "discord.js";
 import { events } from "../definitions/events";
 import { commands } from "../definitions/commands";
 import { ICommand } from "../utils/interfaces";
-import { handleCommands, handleEvents } from "./handlers";
+import { Handlers } from "./handlers";
 
 /** The client */
 export const client = new Client();
@@ -18,7 +18,7 @@ export const config = {
 export const commandList = new Collection<string, ICommand>();
 
 /** Handling the events */
-handleEvents(client, events);
+Handlers.event(client, events);
 
 /** Handling the commands */
-handleCommands(commands);
+Handlers.command(commands);

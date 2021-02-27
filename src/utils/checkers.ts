@@ -73,8 +73,7 @@ export async function checkTheCommand(client: Client, message: Message) {
 
 /**
  * Checks the user developer or not.
- * @param uid - User
- * @returns true or false
+ * @param user - User
  */
 export function isDeveloper(user: User): boolean {
     if (config.developers.includes(user.id)) return true;
