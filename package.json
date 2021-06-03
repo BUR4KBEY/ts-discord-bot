@@ -1,5 +1,5 @@
 {
-  "name": "typescript-bot",
+  "name": "ts-discord-bot",
   "version": "1.0.0",
   "description": "Discord bot made with Typescript",
   "scripts": {
@@ -24,10 +24,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/BUR4KBEY/typescript-bot.git"
+    "url": "git+https://github.com/BUR4KBEY/ts-discord-bot.git"
   },
   "bugs": {
-    "url": "https://github.com/BUR4KBEY/typescript-bot/issues"
+    "url": "https://github.com/BUR4KBEY/ts-discord-bot/issues"
   },
-  "homepage": "https://github.com/BUR4KBEY/typescript-bot#readme"
+  "homepage": "https://github.com/BUR4KBEY/ts-discord-bot#readme"
 }

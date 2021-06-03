@@ -1,4 +1,4 @@
-# Typescript Bot
+# Typescript Discord Bot
 This is a discord bot template made with Typescript.
 
 ## Installation
