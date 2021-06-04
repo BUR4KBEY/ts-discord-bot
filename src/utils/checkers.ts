@@ -1,4 +1,4 @@
-import { Client, Message, User, Collection, MessageEmbed } from "discord.js";
+import { Client, Message, User, Collection, MessageEmbed, GuildMember } from "discord.js";
 import { config, commandList as commands } from "../core/client";
 import { ICommand } from "./interfaces";
 
@@ -13,19 +13,19 @@ export async function checkTheCommand(client: Client, message: Message) {
     const prefix = config.prefix;
     if (message.content.toLocaleLowerCase().indexOf(prefix) !== 0) return;
     const args = message.content.slice(prefix.length).trim().split(/ +/g);
-    const command: string | undefined = args.shift()?.toLowerCase();
-    if (command === undefined) return;
+    const command = (args.shift() as string).toLowerCase();
 
     try {
         const cmd: ICommand | undefined = commands.get(command) || commands.array().find(cmd => cmd.config.aliases && cmd.config.aliases.includes(command));
-        if (cmd === undefined) return;
-        if (cmd.config.enabled != true) return;
+        if (!cmd) return;
+
+        if (!cmd.config.enabled) return;
         if (cmd.require.developer && !isDeveloper(message.author)) return;
-        
+
         if (isArray(cmd.require.permissions) && !isDeveloper(message.author)) {
             var perms: Array<string> = [];
             cmd.require.permissions.forEach(permission => {
-                if (message.member?.permissions.has(permission)) return;
+                if ((message.member as GuildMember).permissions.has(permission)) return;
                 else return perms.push(`\`${permission}\``);
             });
 
@@ -45,15 +45,14 @@ export async function checkTheCommand(client: Client, message: Message) {
             if (timestamps?.has(message.author.id)) {
                 const currentTime = timestamps.get(message.author.id);
                 if (typeof currentTime != 'undefined') {
-                    const expirationTime = currentTime + cooldownAmount; 
+                    const expirationTime = currentTime + cooldownAmount;
                     if (now < expirationTime) {
                         message.delete();
-                        const timeLeft = (expirationTime - now) / 1000;
-                        timeLeft.toFixed(1);
+                        const timeLeft = ((expirationTime - now) / 1000).toFixed(1);
                         return message.channel.send(new MessageEmbed({
                             color: 'ORANGE',
                             title: 'Calm Down',
-                            description: `${message.author} To run the command, you must wait **${timeLeft.toFixed(1)}** more seconds.`
+                            description: `${message.author} To run the command, you must wait **${timeLeft}** more seconds.`
                         }));
                     }
                 }
@@ -61,9 +60,7 @@ export async function checkTheCommand(client: Client, message: Message) {
 
             if (!isDeveloper(message.author)) {
                 timestamps?.set(message.author.id, now);
-                setTimeout(() => {
-                    timestamps?.delete(message.author.id);
-                }, cooldownAmount);
+                setTimeout(() => timestamps?.delete(message.author.id), cooldownAmount);
             }
         }
 
@@ -76,15 +73,13 @@ export async function checkTheCommand(client: Client, message: Message) {
  * @param user - User
  */
 export function isDeveloper(user: User): boolean {
-    if (config.developers.includes(user.id)) return true;
-    else return false;
+    return config.developers.includes(user.id);
 }
 
 /**
  * Checks the value is array or not.
  * @param value - Any value
  */
-export function isArray(value: any): boolean  {
-    if (Array.isArray(value) && value.length) return true;
-    else return false;
+export function isArray(value: any): boolean {
+    return Array.isArray(value) && value.length > 0;
 }

@@ -1,12 +1,12 @@
 import { IEvent } from "../utils/interfaces";
 import { Client, ClientEvents } from "discord.js";
-import chalk from 'chalk';
+import { ClientLogger } from "../utils/logger";
 
 export class DisconnectEvent implements IEvent {
     name: keyof ClientEvents = "disconnect";
 
     onTriggered = async (client: Client) => {
-        console.log(`${chalk.red.bold("Client >")} Disconnected!`);
+        ClientLogger.log("ERROR", "Disconnected!");
         client.destroy();
     }
 }

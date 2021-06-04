@@ -1,6 +1,6 @@
 import { Client, Collection } from "discord.js";
-import { events } from "../definitions/events";
-import { commands } from "../definitions/commands";
+import events from "../definitions/events";
+import commands from "../definitions/commands";
 import { ICommand } from "../utils/interfaces";
 import { Handlers } from "./handlers";
 
