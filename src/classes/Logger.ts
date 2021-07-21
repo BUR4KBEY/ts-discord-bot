@@ -1,8 +1,10 @@
 import chalk from 'chalk';
-import { LOGTYPE } from './types';
+import moment from 'moment-timezone';
 
-export class ClientLogger {
-    static log(type: LOGTYPE, message: string) {
+import { LogType } from '../utils/types';
+
+export default class Logger {
+    static log(type: LogType, message: string, spaces: boolean = false) {
         var color: "green" | "yellow" | "red" | "blue";
 
         switch (type) {
@@ -20,6 +22,6 @@ export class ClientLogger {
                 break;
         }
 
-        console.log(`${chalk[color].bold("Client >")} ${message}`);
+        console.log(`${spaces ? '\n' : ''}${chalk.magenta(`${moment().format("DD/MM/YYYY HH:mm:ss")}`)} ${chalk[color].bold(`${type}`)} ${message}${spaces ? '\n' : ''}`);
     }
 }

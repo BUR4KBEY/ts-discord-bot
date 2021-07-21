@@ -1,12 +1,18 @@
-import { Client, ClientEvents, Message } from "discord.js";
-import { checkTheCommand } from "../utils/checkers";
-import { IEvent } from "../utils/interfaces";
+import { Message } from 'discord.js';
 
-export class MessageEvent implements IEvent {
-    name: keyof ClientEvents = "message";
+import CommandHandler from '../classes/CommandHandler';
+import DiscordClient from '../structures/DiscordClient';
+import Event from '../structures/Event';
 
-    onTriggered = async (client: Client, message: Message) => {
-        if (message.author.bot || message.channel.type == 'dm') return;
-        await checkTheCommand(client, message);
+export default class MessageEvent extends Event {
+
+    constructor(client: DiscordClient) {
+        super(client, "message");
     }
+
+    async run(message: Message) {
+        if (message.author.bot || message.channel.type === "dm") return;
+        await CommandHandler.handleCommand(this.client, message);
+    }
+
 }

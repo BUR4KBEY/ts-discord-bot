@@ -1,39 +1,61 @@
-import { ClientEvents, PermissionString } from "discord.js";
+import { PermissionString } from 'discord.js';
 
-/** Interface for events */
-export interface IEvent {
-    /** Name of the event */
-    name: keyof ClientEvents;
-    /** Initializing the function when event triggered */
-    onTriggered(...any: any): Promise<any>;
+export interface IConfig {
+    /** Token of the client */
+    token: string;
+
+    /** Prefix of the client */
+    prefix: string;
+
+    /** Developer ids of the client */
+    developers: string[];
 }
 
-/** Interface for commands */
-export interface ICommand {
-    /** Configurations of the command */
-    config: ICommandConfig;
-    /** Requires of the command to be run */
-    require: ICommandRequire;
-    /** Initializing the function when event triggered. */
-    onTriggered(...any: any): Promise<any>;
-}
-
-/** Configurations of the command */
-export interface ICommandConfig {
+export interface ICommandInfo {
     /** Name of the command */
     name: string;
+
+    /** Group name of the command */
+    group: string;
+
     /** Aliases of the command */
-    aliases: Array<string>;
-    /** Cooldown of the command */
-    cooldown: number | false;
+    aliases?: string[];
+
+    /** Example usages */
+    examples?: string[];
+
+    /** Description of the command */
+    description?: string;
+
+    /**
+     * Time to wait for each use (seconds)
+     * 
+     * Developers are not affected
+     */
+    cooldown?: number;
+
     /** Status of the command */
-    enabled: boolean;
+    enabled?: boolean;
+
+    /**
+     * If enabled, command only runs in nsfw channels
+     * 
+     * Developers are not affected
+     */
+    onlyNsfw?: boolean;
+
+    /** Requirements of the command */
+    require?: ICommandRequire;
 }
 
-/** Requires of the command to be run */
 export interface ICommandRequire {
-    /** User must be an developer of the client */
-    developer: boolean;
-    /** User must have that permissions on the guild  */
-    permissions: Array<PermissionString>;
+    /** If enabled, command requires developer permission to run */
+    developer?: boolean;
+
+    /**
+     * Command requires permission flags to run
+     * 
+     * Developers are not affected
+     */
+    permissions?: PermissionString[];
 }

@@ -1,22 +1,28 @@
 {
   "name": "ts-discord-bot",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Discord bot made with Typescript",
   "scripts": {
     "clean": "rimraf dist",
     "build": "yarn clean && tsc -p .",
-    "start": "node dist/app.js",
-    "dev": "nodemon src/app.ts"
+    "start": "node dist/index.js",
+    "dev": "nodemon src/index.ts"
   },
   "author": "BurakBey",
   "license": "MIT",
   "dependencies": {
     "chalk": "^4.1.0",
-    "discord.js": "^12.5.1",
-    "fs": "0.0.1-security"
+    "discord.js": "^12.5.3",
+    "dotenv": "^10.0.0",
+    "moment-duration-format": "^2.3.2",
+    "moment-timezone": "^0.5.33",
+    "path": "^0.12.7",
+    "require-all": "^3.0.0"
   },
   "devDependencies": {
+    "@types/moment-duration-format": "^2.2.3",
     "@types/node": "^14.14.10",
+    "@types/require-all": "^3.0.3",
     "nodemon": "^2.0.6",
     "rimraf": "^3.0.2",
     "ts-node": "^9.0.0",

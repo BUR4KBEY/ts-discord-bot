@@ -1,4 +1,4 @@
-export type LOGTYPE = "SUCCESS"
+export type LogType = "SUCCESS"
     | "WARNING"
     | "ERROR"
     | "INFO";

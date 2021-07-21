@@ -1,9 +1,16 @@
-import { IEvent } from "../utils/interfaces";
-import { ClientEvents } from "discord.js";
-import { ClientLogger } from "../utils/logger";
 
-export class ReadyEvent implements IEvent {
-    name: keyof ClientEvents = "ready";
+import Logger from '../classes/Logger';
+import DiscordClient from '../structures/DiscordClient';
+import Event from '../structures/Event';
 
-    onTriggered = async () => ClientLogger.log("SUCCESS", "Ready!");
+export default class ReadyEvent extends Event {
+
+    constructor(client: DiscordClient) {
+        super(client, "ready");
+    }
+
+    async run() {
+        Logger.log('SUCCESS', `Logged in as "${this.client.user?.tag}".`);
+    }
+
 }
