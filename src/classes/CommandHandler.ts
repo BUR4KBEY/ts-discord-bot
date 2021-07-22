@@ -40,11 +40,12 @@ export default class CommandHandler {
             }
         }
 
-        if (cmd.info.cooldown) {
-            const now = Date.now();
-            const timestamps = client.registry.getCooldownTimestamps(cmd.info.name);
-            const cooldownAmount = cmd.info.cooldown * 1000;
+        var addCooldown = false;
 
+        const now = Date.now();
+        const timestamps = client.registry.getCooldownTimestamps(cmd.info.name);
+        const cooldownAmount = cmd.info.cooldown ? cmd.info.cooldown * 1000 : 0;
+        if (cmd.info.cooldown) {
             if (timestamps.has(message.author.id)) {
                 const currentTime = timestamps.get(message.author.id);
                 if (!currentTime) return;
@@ -61,14 +62,20 @@ export default class CommandHandler {
                 }
             }
 
-            if (!isUserDeveloper(client, message.author.id)) {
-                timestamps.set(message.author.id, now);
-                setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
-            }
+            addCooldown = true;
         }
 
         try {
-            await cmd.run(message, args);
+            var applyCooldown = true;
+
+            await cmd.run(message, args, () => {
+                applyCooldown = false;
+            });
+
+            if (addCooldown && applyCooldown && !isUserDeveloper(client, message.author.id)) {
+                timestamps.set(message.author.id, now);
+                setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
+            }
         } catch (error) {
             await cmd.onError(message, error);
         }

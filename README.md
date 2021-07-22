@@ -104,3 +104,22 @@ export default class GuildMemberAddEvent extends Event {
 ```
 
 You can check event parameters from [discord.js.org](https://discord.js.org/#/docs/main/stable/class/Client).
+
+---
+
+## ⏰ Cancelling Cooldown
+
+If you want to cancel adding command cooldown to user:
+- Open your command file
+- Add this parameter to `run` function:
+    
+    ```ts
+    cancelCooldown: () => void
+    ```
+
+    It should looks like that:
+    
+    ```ts
+    async run(message: Message, args: string[], cancelCooldown: () => void)
+    ```
+- Call `cancelCooldown` function where you want to cancelling cooldown.

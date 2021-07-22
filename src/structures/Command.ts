@@ -55,6 +55,7 @@ export default abstract class Command {
      * Runs the command.
      * @param message Message object
      * @param args Arguments
+     * @param cancelCooldown Cancels cooldown when function called
      */
-    abstract run(message: Message, args: string[]): Promise<any>;
+    abstract run(message: Message, args: string[], cancelCooldown?: () => void): Promise<any>;
 }
