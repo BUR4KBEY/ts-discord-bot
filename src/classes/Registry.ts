@@ -13,7 +13,7 @@ export default class Registry {
     private commands: Collection<string, Command>;
     private events: Collection<string, Event>;
     private cooldowns: Collection<string, Collection<string, number>>;
-    readonly groups: Collection<string, string[]>;
+    private groups: Collection<string, string[]>;
 
     constructor(client: DiscordClient) {
         this.client = client;
@@ -148,6 +148,13 @@ export default class Registry {
      */
     findCommand(command: string): Command | undefined {
         return this.commands.get(command) || this.commands.array().find(cmd => cmd.info.aliases && cmd.info.aliases.includes(command));
+    }
+
+    /**
+     * Returns group collection
+     */
+    getGroups() {
+        return this.groups;
     }
 
     /**

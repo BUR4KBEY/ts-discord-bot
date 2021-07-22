@@ -20,11 +20,12 @@ export default class HelpCommand extends Command {
     }
 
     getAvailableGroups(message: Message): IGroup[] {
-        const groupKeys = this.client.registry.groups.keyArray();
+        const collection = this.client.registry.getGroups();
+        const groupKeys = collection.keyArray();
         const groups: IGroup[] = [];
 
         groupKeys.forEach(group => {
-            const commandsInGroup = this.client.registry.groups.get(group) as string[];
+            const commandsInGroup = collection.get(group) as string[];
             const commands: string[] = [];
 
             commandsInGroup.forEach(commandName => {
