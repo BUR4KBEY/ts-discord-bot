@@ -1,4 +1,4 @@
-import { Client, ClientOptions } from 'discord.js';
+import { Client } from 'discord.js';
 import dotenv from 'dotenv';
 
 import Registry from '../classes/Registry';
