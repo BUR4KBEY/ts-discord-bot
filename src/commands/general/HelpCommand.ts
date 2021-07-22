@@ -1,8 +1,8 @@
-import { GuildMember, Message, MessageEmbed } from 'discord.js';
+import { Message, MessageEmbed } from 'discord.js';
 
 import Command from '../../structures/Command';
 import DiscordClient from '../../structures/DiscordClient';
-import { formatSeconds, isUserDeveloper } from '../../utils/functions';
+import { formatSeconds } from '../../utils/functions';
 
 interface IGroup {
     name: string;
@@ -30,18 +30,7 @@ export default class HelpCommand extends Command {
 
             commandsInGroup.forEach(commandName => {
                 const command = this.client.registry.findCommand(commandName) as Command;
-                if (command.info.enabled === false) return;
-                if (command.info.require) {
-                    if (command.info.require.developer && !isUserDeveloper(this.client, message.author.id)) return;
-                    if (command.info.require.permissions && !isUserDeveloper(this.client, message.author.id)) {
-                        const perms: string[] = [];
-                        command.info.require.permissions.forEach(permission => {
-                            if ((message.member as GuildMember).permissions.has(permission)) return;
-                            else return perms.push(permission);
-                        });
-                        if (perms.length) return;
-                    }
-                }
+                if (!command.isUsable(message)) return;
                 commands.push(commandName);
             });
 
