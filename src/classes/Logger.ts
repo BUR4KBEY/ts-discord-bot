@@ -5,23 +5,23 @@ import { LogType } from '../utils/types';
 
 export default class Logger {
     static log(type: LogType, message: string, spaces: boolean = false) {
-        var color: "green" | "yellow" | "red" | "blue";
+        var color: 'green' | 'yellow' | 'red' | 'blue';
 
         switch (type) {
             case 'SUCCESS':
-                color = "green";
+                color = 'green';
                 break;
             case 'WARNING':
-                color = "yellow";
+                color = 'yellow';
                 break;
             case 'ERROR':
-                color = "red";
+                color = 'red';
                 break;
             case 'INFO':
-                color = "blue";
+                color = 'blue';
                 break;
         }
 
-        console.log(`${spaces ? '\n' : ''}${chalk.magenta(`${moment().format("DD/MM/YYYY HH:mm:ss")}`)} ${chalk[color].bold(`${type}`)} ${message}${spaces ? '\n' : ''}`);
+        console.log(`${spaces ? '\n' : ''}${chalk.magenta(`${moment().format('DD/MM/YYYY HH:mm:ss')}`)} ${chalk[color].bold(`${type}`)} ${message}${spaces ? '\n' : ''}`);
     }
 }

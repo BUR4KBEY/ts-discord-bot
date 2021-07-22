@@ -4,9 +4,9 @@ import DiscordClient from './DiscordClient';
 
 export default abstract class Event {
     readonly client: DiscordClient;
-    readonly name: keyof ClientEvents | "raw";
+    readonly name: keyof ClientEvents | 'raw';
 
-    constructor(client: DiscordClient, name: keyof ClientEvents | "raw") {
+    constructor(client: DiscordClient, name: keyof ClientEvents | 'raw') {
         this.client = client;
         this.name = name;
     }

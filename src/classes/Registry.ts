@@ -38,7 +38,7 @@ export default class Registry {
 
         this.events.set(evt.name, evt);
         this.client.on(evt.name as keyof ClientEvents, evt.run.bind(evt));
-        Logger.log("INFO", `Event "${evt.name}" loaded.`);
+        Logger.log('INFO', `Event "${evt.name}" loaded.`);
     }
 
     /**
@@ -61,7 +61,7 @@ export default class Registry {
         const events: any[] = [];
 
         requireAll({
-            dirname: path.join(__dirname, "../events"),
+            dirname: path.join(__dirname, '../events'),
             recursive: true,
             filter: /\w*.[tj]s/g,
             resolve: x => events.push(x)
@@ -81,19 +81,25 @@ export default class Registry {
 
         const cmd = command as Command;
 
-        if (this.commands.some(x => {
-            if (x.info.name === cmd.info.name) return true;
-            else if (x.info.aliases && x.info.aliases.includes(cmd.info.name)) return true;
-            else return false;
-        })) throw new Error(`A command with the name/alias "${cmd.info.name}" is already registered.`);
+        if (
+            this.commands.some(x => {
+                if (x.info.name === cmd.info.name) return true;
+                else if (x.info.aliases && x.info.aliases.includes(cmd.info.name)) return true;
+                else return false;
+            })
+        )
+            throw new Error(`A command with the name/alias "${cmd.info.name}" is already registered.`);
 
         if (cmd.info.aliases) {
             for (const alias of cmd.info.aliases) {
-                if (this.commands.some(x => {
-                    if (x.info.name === alias) return true;
-                    else if (x.info.aliases && x.info.aliases.includes(alias)) return true;
-                    else return false;
-                })) throw new Error(`A command with the name/alias "${alias}" is already registered.`);
+                if (
+                    this.commands.some(x => {
+                        if (x.info.name === alias) return true;
+                        else if (x.info.aliases && x.info.aliases.includes(alias)) return true;
+                        else return false;
+                    })
+                )
+                    throw new Error(`A command with the name/alias "${alias}" is already registered.`);
             }
         }
 
@@ -104,7 +110,7 @@ export default class Registry {
             groups.push(cmd.info.name);
             this.groups.set(cmd.info.group, groups);
         }
-        Logger.log("INFO", `Command "${cmd.info.name}" loaded.`);
+        Logger.log('INFO', `Command "${cmd.info.name}" loaded.`);
     }
 
     /**
@@ -127,7 +133,7 @@ export default class Registry {
         const commands: any[] = [];
 
         requireAll({
-            dirname: path.join(__dirname, "../commands"),
+            dirname: path.join(__dirname, '../commands'),
             recursive: true,
             filter: /\w*.[tj]s/g,
             resolve: x => commands.push(x)

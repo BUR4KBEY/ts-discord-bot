@@ -29,7 +29,7 @@ export interface ICommandInfo {
 
     /**
      * Time to wait for each use (seconds)
-     * 
+     *
      * Developers are not affected
      */
     cooldown?: number;
@@ -39,7 +39,7 @@ export interface ICommandInfo {
 
     /**
      * If enabled, command only runs in nsfw channels
-     * 
+     *
      * Developers are not affected
      */
     onlyNsfw?: boolean;
@@ -54,7 +54,7 @@ export interface ICommandRequire {
 
     /**
      * Command requires permission flags to run
-     * 
+     *
      * Developers are not affected
      */
     permissions?: PermissionString[];

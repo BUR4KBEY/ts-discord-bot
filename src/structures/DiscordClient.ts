@@ -16,7 +16,7 @@ export default class DiscordClient extends Client {
         this.config = {
             token: process.env.TOKEN as string,
             prefix: process.env.PREFIX as string,
-            developers: JSON.parse(process.env.DEVELOPERS as string) as string[],
+            developers: JSON.parse(process.env.DEVELOPERS as string) as string[]
         };
 
         this.registry = new Registry(this);

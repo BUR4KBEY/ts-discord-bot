@@ -18,11 +18,14 @@ export default class CommandHandler {
         if (!cmd) return;
 
         if (cmd.info.enabled === false) return;
-        if (cmd.info.onlyNsfw === true && !(message.channel as TextChannel).nsfw && !isUserDeveloper(client, message.author.id)) return await message.channel.send(new MessageEmbed({
-            color: "#EEB4D5",
-            title: "🔞 Be Careful",
-            description: `${message.author}, you can't use this command on non-nsfw channels.`
-        }));
+        if (cmd.info.onlyNsfw === true && !(message.channel as TextChannel).nsfw && !isUserDeveloper(client, message.author.id))
+            return await message.channel.send(
+                new MessageEmbed({
+                    color: '#EEB4D5',
+                    title: '🔞 Be Careful',
+                    description: `${message.author}, you can't use this command on non-nsfw channels.`
+                })
+            );
 
         if (cmd.info.require) {
             if (cmd.info.require.developer && !isUserDeveloper(client, message.author.id)) return;
@@ -32,11 +35,14 @@ export default class CommandHandler {
                     if ((message.member as GuildMember).permissions.has(permission)) return;
                     else return perms.push(`\`${permission}\``);
                 });
-                if (perms.length) return await message.channel.send(new MessageEmbed({
-                    color: "#FCE100",
-                    title: "⚠️ Missing Permissions",
-                    description: `${message.author}, you must have these permissions to run this command.\n\n${perms.join('\n')}`
-                }));
+                if (perms.length)
+                    return await message.channel.send(
+                        new MessageEmbed({
+                            color: '#FCE100',
+                            title: '⚠️ Missing Permissions',
+                            description: `${message.author}, you must have these permissions to run this command.\n\n${perms.join('\n')}`
+                        })
+                    );
             }
         }
 
@@ -54,11 +60,15 @@ export default class CommandHandler {
                 if (now < expirationTime) {
                     await message.delete();
                     const timeLeft = (expirationTime - now) / 1000;
-                    return await message.channel.send(new MessageEmbed({
-                        color: 'ORANGE',
-                        title: "⏰ Calm Down",
-                        description: `${message.author}, you must wait \`${formatSeconds(Math.floor(timeLeft))}\` to run this command.`
-                    })).then(async msg => await msg.delete({ timeout: 3000 }).catch(() => { }));
+                    return await message.channel
+                        .send(
+                            new MessageEmbed({
+                                color: 'ORANGE',
+                                title: '⏰ Calm Down',
+                                description: `${message.author}, you must wait \`${formatSeconds(Math.floor(timeLeft))}\` to run this command.`
+                            })
+                        )
+                        .then(async msg => await msg.delete({ timeout: 3000 }).catch(() => {}));
                 }
             }
 

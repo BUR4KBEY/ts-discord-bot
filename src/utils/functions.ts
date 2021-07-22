@@ -4,7 +4,11 @@ import moment from 'moment-timezone';
 
 import DiscordClient from '../structures/DiscordClient';
 
-const isConstructorProxyHandler = { construct() { return Object.prototype; } };
+const isConstructorProxyHandler = {
+    construct() {
+        return Object.prototype;
+    }
+};
 
 export function isConstructor(func: any, _class: any) {
     try {
@@ -21,9 +25,9 @@ export function isUserDeveloper(client: DiscordClient, userId: string) {
 }
 
 export function formatSeconds(seconds: number): string {
-    const str = moment.duration(seconds, "seconds").format("Y [year] M [month] W [week] D [day] H [hour] m [minute] s [second]");
-    const arr = str.split(" ");
-    var newStr = "";
+    const str = moment.duration(seconds, 'seconds').format('Y [year] M [month] W [week] D [day] H [hour] m [minute] s [second]');
+    const arr = str.split(' ');
+    var newStr = '';
     arr.forEach((value, index) => {
         if (isNaN(parseInt(value))) return;
         const val = parseInt(value);
@@ -31,7 +35,7 @@ export function formatSeconds(seconds: number): string {
         else {
             const nextIndex = arr[index + 1];
             newStr += `${value} ${nextIndex} `;
-        };
+        }
     });
     return newStr.trim();
 }
