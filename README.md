@@ -36,7 +36,7 @@ You can easily create more advanced, complex systems with this template.
     -   These events happen when reboot command run:
         -   Bot stops
         -   Resetting events, commands, command groups and cooldowns
-        -   Reregistering events and commands like freshly
+        -   Reregistering events and commands
         -   Starting the bot again
 
 ## ❓ What Is The Developer Permission
