@@ -34,12 +34,19 @@ export default class Registry {
      */
     private groups: Collection<string, string[]>;
 
-    constructor(client: DiscordClient) {
-        this.client = client;
+    /**
+     * Creates instance for all collections.
+     */
+    private newCollections() {
         this.commands = new Collection<string, Command>();
         this.events = new Collection<string, Event>();
         this.cooldowns = new Collection<string, Collection<string, number>>();
         this.groups = new Collection<string, string[]>();
+    }
+
+    constructor(client: DiscordClient) {
+        this.client = client;
+        this.newCollections();
     }
 
     /**
@@ -170,10 +177,18 @@ export default class Registry {
     }
 
     /**
-     * Returns group collection.
+     * Finds and returns the commands in group by group name
+     * @param group Name of group
      */
-    getGroups() {
-        return this.groups;
+    findCommandsInGroup(group: string): string[] | undefined {
+        return this.groups.get(group);
+    }
+
+    /**
+     * Returns all group names.
+     */
+    getAllGroupNames() {
+        return this.groups.keyArray();
     }
 
     /**
@@ -191,5 +206,17 @@ export default class Registry {
     registerAll() {
         this.registerAllCommands();
         this.registerAllEvents();
+    }
+
+    /**
+     * Removes all events from client then reregisters events & commands. Resets groups and cooldowns.
+     *
+     * Call this function while client is offline.
+     */
+    reregisterAll() {
+        const allEvents = this.events.keyArray();
+        allEvents.forEach(event => this.client.removeAllListeners(event));
+        this.newCollections();
+        this.registerAll();
     }
 }
