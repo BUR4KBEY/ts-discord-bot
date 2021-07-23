@@ -1,6 +1,6 @@
 import { Message, MessageEmbed } from 'discord.js';
-import Logger from '../../classes/Logger';
 
+import Logger from '../../classes/Logger';
 import Command from '../../structures/Command';
 import DiscordClient from '../../structures/DiscordClient';
 
