@@ -6,7 +6,14 @@ import { ICommandInfo } from '../utils/interfaces';
 import DiscordClient from './DiscordClient';
 
 export default abstract class Command {
+    /**
+     * Discord client.
+     */
     readonly client: DiscordClient;
+
+    /**
+     * Information of the command.
+     */
     readonly info: ICommandInfo;
 
     constructor(client: DiscordClient, info: ICommandInfo) {

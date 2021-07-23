@@ -20,12 +20,22 @@ export function isConstructor(func: any, _class: any) {
     }
 }
 
+/**
+ * Checks user is a developer or not.
+ * @param client Discord client
+ * @param userId Discord id of the user
+ */
 export function isUserDeveloper(client: DiscordClient, userId: string) {
     return client.config.developers.includes(userId);
 }
 
-export function formatSeconds(seconds: number): string {
-    const str = moment.duration(seconds, 'seconds').format('Y [year] M [month] W [week] D [day] H [hour] m [minute] s [second]');
+/**
+ * Formats seconds and returns as given format.
+ * @param seconds Seconds
+ * @param format Custom format of output (Default: "Y [year] M [month] W [week] D [day] H [hour] m [minute] s [second]")
+ */
+export function formatSeconds(seconds: number, format: string = 'Y [year] M [month] W [week] D [day] H [hour] m [minute] s [second]'): string {
+    const str = moment.duration(seconds, 'seconds').format(format);
     const arr = str.split(' ');
     var newStr = '';
     arr.forEach((value, index) => {

@@ -5,7 +5,7 @@ import { formatSeconds, isUserDeveloper } from '../utils/functions';
 
 export default class CommandHandler {
     /**
-     * Handles the commands
+     * Handles the commands.
      * @param message Message object
      */
     static async handleCommand(client: DiscordClient, message: Message) {

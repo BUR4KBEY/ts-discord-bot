@@ -9,10 +9,29 @@ import { isConstructor } from '../utils/functions';
 import Logger from './Logger';
 
 export default class Registry {
+    /**
+     * Discord client.
+     */
     private client: DiscordClient;
+
+    /**
+     * Collection for command registration.
+     */
     private commands: Collection<string, Command>;
+
+    /**
+     * Collection for event registration.
+     */
     private events: Collection<string, Event>;
+
+    /**
+     * Collection for command cooldown registration.
+     */
     private cooldowns: Collection<string, Collection<string, number>>;
+
+    /**
+     * Collection for command group registration.
+     */
     private groups: Collection<string, string[]>;
 
     constructor(client: DiscordClient) {
@@ -151,7 +170,7 @@ export default class Registry {
     }
 
     /**
-     * Returns group collection
+     * Returns group collection.
      */
     getGroups() {
         return this.groups;

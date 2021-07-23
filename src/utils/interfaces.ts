@@ -1,5 +1,8 @@
 import { PermissionString } from 'discord.js';
 
+/**
+ * Config interface for client.
+ */
 export interface IConfig {
     /** Token of the client */
     token: string;
@@ -11,6 +14,9 @@ export interface IConfig {
     developers: string[];
 }
 
+/**
+ * Information interface for commands.
+ */
 export interface ICommandInfo {
     /** Name of the command */
     name: string;
@@ -48,6 +54,9 @@ export interface ICommandInfo {
     require?: ICommandRequire;
 }
 
+/**
+ * Requirement interface for commands.
+ */
 export interface ICommandRequire {
     /** If enabled, command requires developer permission to run */
     developer?: boolean;
