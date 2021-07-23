@@ -1,4 +1,4 @@
-import { GuildMember, Message, MessageEmbed, TextChannel } from 'discord.js';
+import { Guild, GuildMember, Message, MessageEmbed, TextChannel } from 'discord.js';
 
 import DiscordClient from '../structures/DiscordClient';
 import { formatSeconds, isUserDeveloper } from '../utils/functions';
@@ -9,6 +9,17 @@ export default class CommandHandler {
      * @param message Message object
      */
     static async handleCommand(client: DiscordClient, message: Message) {
+        const self = (message.guild as Guild).me as GuildMember;
+        if (!self.hasPermission('SEND_MESSAGES') || !(message.channel as TextChannel).permissionsFor(self)?.has('SEND_MESSAGES')) return;
+        if (!self.hasPermission('ADMINISTRATOR'))
+            return await message.channel.send(
+                new MessageEmbed({
+                    color: 'RED',
+                    title: '🚨 Missing Permission',
+                    description: `${message.author}, bot requires \`ADMINISTRATOR\` permission to be run.`
+                })
+            );
+
         const prefix = client.config.prefix;
         if (message.content.toLocaleLowerCase().indexOf(prefix) !== 0) return;
         const args = message.content.slice(prefix.length).trim().split(/ +/g);
