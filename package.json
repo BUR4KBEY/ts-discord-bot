@@ -6,7 +6,7 @@
     "clean": "rimraf dist",
     "build": "yarn clean && tsc -p .",
     "start": "node dist/index.js",
-    "dev": "nodemon src/index.ts"
+    "dev": "nodemon -w ./src -w ./.env ./src/index.ts"
   },
   "author": "BurakBey",
   "license": "MIT",
