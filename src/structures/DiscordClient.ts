@@ -1,10 +1,7 @@
 import { Client } from 'discord.js';
-import dotenv from 'dotenv';
 
 import Registry from '../classes/Registry';
 import { IConfig } from '../utils/interfaces';
-
-dotenv.config();
 
 export default class DiscordClient extends Client {
     /**
@@ -26,7 +23,8 @@ export default class DiscordClient extends Client {
         this.config = {
             token: process.env.TOKEN as string,
             prefix: process.env.PREFIX as string,
-            developers: JSON.parse(process.env.DEVELOPERS as string) as string[]
+            developers: JSON.parse(process.env.DEVELOPERS as string) as string[],
+            unknownErrorMessage: JSON.parse(process.env.UNKNOWN_COMMAND_ERROR as string)
         };
 
         /**

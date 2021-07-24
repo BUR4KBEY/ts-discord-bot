@@ -2,6 +2,7 @@ import { ClientEvents, Collection } from 'discord.js';
 import path from 'path';
 import requireAll from 'require-all';
 
+import RegistryError from '../errors/RegistryError';
 import Command from '../structures/Command';
 import DiscordClient from '../structures/DiscordClient';
 import Event from '../structures/Event';
@@ -66,11 +67,11 @@ export default class Registry {
     private registerEvent(event: any) {
         if (isConstructor(event, Event)) event = new event(this.client);
         else if (isConstructor(event.default, Event)) event = new event.default(this.client);
-        if (!(event instanceof Event)) throw new Error(`Invalid event object to register: ${event}`);
+        if (!(event instanceof Event)) throw new RegistryError(`Invalid event object to register: ${event}`);
 
         const evt = event as Event;
 
-        if (this.events.some(e => e.name === evt.name)) throw new Error(`A event with the name "${evt.name}" is already registered.`);
+        if (this.events.some(e => e.name === evt.name)) throw new RegistryError(`A event with the name "${evt.name}" is already registered.`);
 
         this.events.set(evt.name, evt);
         this.client.on(evt.name as keyof ClientEvents, evt.run.bind(evt));
@@ -122,7 +123,7 @@ export default class Registry {
     private registerCommand(command: any) {
         if (isConstructor(command, Command)) command = new command(this.client);
         else if (isConstructor(command.default, Command)) command = new command.default(this.client);
-        if (!(command instanceof Command)) throw new Error(`Invalid command object to register: ${command}`);
+        if (!(command instanceof Command)) throw new RegistryError(`Invalid command object to register: ${command}`);
 
         const cmd = command as Command;
 
@@ -133,7 +134,7 @@ export default class Registry {
                 else return false;
             })
         )
-            throw new Error(`A command with the name/alias "${cmd.info.name}" is already registered.`);
+            throw new RegistryError(`A command with the name/alias "${cmd.info.name}" is already registered.`);
 
         if (cmd.info.aliases) {
             for (const alias of cmd.info.aliases) {
@@ -144,7 +145,7 @@ export default class Registry {
                         else return false;
                     })
                 )
-                    throw new Error(`A command with the name/alias "${alias}" is already registered.`);
+                    throw new RegistryError(`A command with the name/alias "${alias}" is already registered.`);
             }
         }
 

@@ -1,3 +1,7 @@
+// Getting and validating .env file
+import EnvLoader from './classes/EnvLoader';
+EnvLoader.load();
+
 // Setting up moment-timezone
 import moment from 'moment-timezone';
 moment.locale('en');

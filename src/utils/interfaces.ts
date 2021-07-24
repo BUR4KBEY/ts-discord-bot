@@ -12,6 +12,11 @@ export interface IConfig {
 
     /** Developer ids of the client */
     developers: string[];
+
+    /**
+     * Status of sending error message when user try to run unknown command.
+     */
+    unknownErrorMessage: boolean;
 }
 
 /**

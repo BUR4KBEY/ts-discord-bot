@@ -26,7 +26,17 @@ export default class CommandHandler {
         const command = (args.shift() as string).toLowerCase();
 
         const cmd = client.registry.findCommand(command);
-        if (!cmd) return;
+        if (!cmd) {
+            if (client.config.unknownErrorMessage)
+                await message.channel.send(
+                    new MessageEmbed({
+                        color: '#D1D1D1',
+                        title: '🔎 Unknown Command',
+                        description: `${message.author}, type \`${client.config.prefix}help\` to see the command list.`
+                    })
+                );
+            return;
+        }
 
         if (cmd.info.enabled === false) return;
         if (cmd.info.onlyNsfw === true && !(message.channel as TextChannel).nsfw && !isUserDeveloper(client, message.author.id))
