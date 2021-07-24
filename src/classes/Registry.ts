@@ -20,9 +20,19 @@ export default class Registry {
     private commands: Collection<string, Command>;
 
     /**
+     * Command paths
+     */
+    private commandPaths: string[] = [];
+
+    /**
      * Collection for event registration.
      */
     private events: Collection<string, Event>;
+
+    /**
+     * Event paths
+     */
+    private eventPaths: string[] = [];
 
     /**
      * Collection for command cooldown registration.
@@ -86,11 +96,20 @@ export default class Registry {
     private registerAllEvents() {
         const events: any[] = [];
 
+        if (this.eventPaths.length)
+            this.eventPaths.forEach(p => {
+                delete require.cache[p];
+            });
+
         requireAll({
             dirname: path.join(__dirname, '../events'),
             recursive: true,
             filter: /\w*.[tj]s/g,
-            resolve: x => events.push(x)
+            resolve: x => events.push(x),
+            map: (name, filePath) => {
+                if (filePath.endsWith('.ts') || filePath.endsWith('.js')) this.eventPaths.push(path.resolve(filePath));
+                return name;
+            }
         });
 
         this.registerEvents(events);
@@ -158,11 +177,20 @@ export default class Registry {
     private registerAllCommands() {
         const commands: any[] = [];
 
+        if (this.commandPaths.length)
+            this.commandPaths.forEach(p => {
+                delete require.cache[p];
+            });
+
         requireAll({
             dirname: path.join(__dirname, '../commands'),
             recursive: true,
             filter: /\w*.[tj]s/g,
-            resolve: x => commands.push(x)
+            resolve: x => commands.push(x),
+            map: (name, filePath) => {
+                if (filePath.endsWith('.ts') || filePath.endsWith('.js')) this.commandPaths.push(path.resolve(filePath));
+                return name;
+            }
         });
 
         this.registerCommands(commands);
