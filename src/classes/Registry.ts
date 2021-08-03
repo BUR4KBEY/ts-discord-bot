@@ -62,33 +62,14 @@ export default class Registry {
 
     /**
      * Registers single event.
-     * @param event Event
+     * @param event Event object
      */
-    private registerEvent(event: any) {
-        if (isConstructor(event, Event)) event = new event(this.client);
-        else if (isConstructor(event.default, Event)) event = new event.default(this.client);
-        if (!(event instanceof Event)) throw new RegistryError(`Invalid event object to register: ${event}`);
+    private registerEvent(event: Event) {
+        if (this.events.some(e => e.name === event.name)) throw new RegistryError(`A event with the name "${event.name}" is already registered.`);
 
-        const evt = event as Event;
-
-        if (this.events.some(e => e.name === evt.name)) throw new RegistryError(`A event with the name "${evt.name}" is already registered.`);
-
-        this.events.set(evt.name, evt);
-        this.client.on(evt.name as keyof ClientEvents, evt.run.bind(evt));
-        Logger.log('INFO', `Event "${evt.name}" loaded.`);
-    }
-
-    /**
-     * Registers multiple events.
-     * @param events Array of events
-     */
-    private registerEvents(events: any[]) {
-        if (!Array.isArray(events)) throw new TypeError('Events must be an Array.');
-        for (const event of events) {
-            const valid = isConstructor(event, Event) || isConstructor(event.default, Event) || event instanceof Event || event.default instanceof Event;
-            if (!valid) continue;
-            this.registerEvent(event);
-        }
+        this.events.set(event.name, event);
+        this.client.on(event.name as keyof ClientEvents, event.run.bind(event));
+        Logger.log('INFO', `Event "${event.name}" loaded.`);
     }
 
     /**
@@ -113,31 +94,34 @@ export default class Registry {
             }
         });
 
-        this.registerEvents(events);
+        for (let event of events) {
+            const valid = isConstructor(event, Event) || isConstructor(event.default, Event) || event instanceof Event || event.default instanceof Event;
+            if (!valid) continue;
+
+            if (isConstructor(event, Event)) event = new event(this.client);
+            else if (isConstructor(event.default, Event)) event = new event.default(this.client);
+            if (!(event instanceof Event)) throw new RegistryError(`Invalid event object to register: ${event}`);
+
+            this.registerEvent(event);
+        }
     }
 
     /**
      * Registers single command.
-     * @param command Command
+     * @param command Command object
      */
-    private registerCommand(command: any) {
-        if (isConstructor(command, Command)) command = new command(this.client);
-        else if (isConstructor(command.default, Command)) command = new command.default(this.client);
-        if (!(command instanceof Command)) throw new RegistryError(`Invalid command object to register: ${command}`);
-
-        const cmd = command as Command;
-
+    private registerCommand(command: Command) {
         if (
             this.commands.some(x => {
-                if (x.info.name === cmd.info.name) return true;
-                else if (x.info.aliases && x.info.aliases.includes(cmd.info.name)) return true;
+                if (x.info.name === command.info.name) return true;
+                else if (x.info.aliases && x.info.aliases.includes(command.info.name)) return true;
                 else return false;
             })
         )
-            throw new RegistryError(`A command with the name/alias "${cmd.info.name}" is already registered.`);
+            throw new RegistryError(`A command with the name/alias "${command.info.name}" is already registered.`);
 
-        if (cmd.info.aliases) {
-            for (const alias of cmd.info.aliases) {
+        if (command.info.aliases) {
+            for (const alias of command.info.aliases) {
                 if (
                     this.commands.some(x => {
                         if (x.info.name === alias) return true;
@@ -149,27 +133,14 @@ export default class Registry {
             }
         }
 
-        this.commands.set(cmd.info.name, cmd);
-        if (!this.groups.has(cmd.info.group)) this.groups.set(cmd.info.group, [cmd.info.name]);
+        this.commands.set(command.info.name, command);
+        if (!this.groups.has(command.info.group)) this.groups.set(command.info.group, [command.info.name]);
         else {
-            const groups = this.groups.get(cmd.info.group) as string[];
-            groups.push(cmd.info.name);
-            this.groups.set(cmd.info.group, groups);
+            const groups = this.groups.get(command.info.group) as string[];
+            groups.push(command.info.name);
+            this.groups.set(command.info.group, groups);
         }
-        Logger.log('INFO', `Command "${cmd.info.name}" loaded.`);
-    }
-
-    /**
-     * Registers multiple commands.
-     * @param commands Array of commands
-     */
-    private registerCommands(commands: any[]) {
-        if (!Array.isArray(commands)) throw new TypeError('Commands must be an Array.');
-        for (const command of commands) {
-            const valid = isConstructor(command, Command) || isConstructor(command.default, Command) || command instanceof Command || command.default instanceof Command;
-            if (!valid) continue;
-            this.registerCommand(command);
-        }
+        Logger.log('INFO', `Command "${command.info.name}" loaded.`);
     }
 
     /**
@@ -194,7 +165,16 @@ export default class Registry {
             }
         });
 
-        this.registerCommands(commands);
+        for (let command of commands) {
+            const valid = isConstructor(command, Command) || isConstructor(command.default, Command) || command instanceof Command || command.default instanceof Command;
+            if (!valid) continue;
+
+            if (isConstructor(command, Command)) command = new command(this.client);
+            else if (isConstructor(command.default, Command)) command = new command.default(this.client);
+            if (!(command instanceof Command)) throw new RegistryError(`Invalid command object to register: ${command}`);
+
+            this.registerCommand(command);
+        }
     }
 
     /**
