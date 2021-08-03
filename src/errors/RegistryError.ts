@@ -1,6 +1,3 @@
-export default class RegistryError extends Error {
-    constructor(message: string) {
-        super(message);
-        this.name = 'RegistryError';
-    }
-}
+import BaseError from './BaseError';
+
+export default class RegistryError extends BaseError {}
