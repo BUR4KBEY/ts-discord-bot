@@ -1,4 +1,4 @@
-import { GuildMember, Message, MessageEmbed, TextChannel } from 'discord.js';
+import { GuildMember, Message, TextChannel } from 'discord.js';
 
 import Logger from '../classes/Logger';
 import { isUserDeveloper } from '../utils/functions';

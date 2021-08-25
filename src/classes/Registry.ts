@@ -1,4 +1,4 @@
-import { ClientEvents, Collection } from 'discord.js';
+import { Collection } from 'discord.js';
 import path from 'path';
 import requireAll from 'require-all';
 
