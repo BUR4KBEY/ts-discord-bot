@@ -11,9 +11,9 @@ export default abstract class Event {
     /**
      * Name of the event.
      */
-    readonly name: keyof ClientEvents | 'raw';
+    readonly name: keyof ClientEvents;
 
-    constructor(client: DiscordClient, name: keyof ClientEvents | 'raw') {
+    constructor(client: DiscordClient, name: keyof ClientEvents) {
         this.client = client;
         this.name = name;
     }

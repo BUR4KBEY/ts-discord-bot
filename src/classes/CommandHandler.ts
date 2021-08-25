@@ -1,4 +1,4 @@
-import { Guild, GuildMember, Message, MessageEmbed, TextChannel } from 'discord.js';
+import { Guild, GuildMember, Message, TextChannel } from 'discord.js';
 
 import DiscordClient from '../structures/DiscordClient';
 import { formatSeconds, isUserDeveloper } from '../utils/functions';
@@ -10,15 +10,17 @@ export default class CommandHandler {
      */
     static async handleCommand(client: DiscordClient, message: Message) {
         const self = (message.guild as Guild).me as GuildMember;
-        if (!self.hasPermission('SEND_MESSAGES') || !(message.channel as TextChannel).permissionsFor(self)?.has('SEND_MESSAGES')) return;
-        if (!self.hasPermission('ADMINISTRATOR'))
-            return await message.channel.send(
-                new MessageEmbed({
-                    color: 'RED',
-                    title: '🚨 Missing Permission',
-                    description: `${message.author}, bot requires \`ADMINISTRATOR\` permission to be run.`
-                })
-            );
+        if (!self.permissions.has('SEND_MESSAGES') || !(message.channel as TextChannel).permissionsFor(self)?.has('SEND_MESSAGES')) return;
+        if (!self.permissions.has('ADMINISTRATOR'))
+            return await message.channel.send({
+                embeds: [
+                    {
+                        color: 'RED',
+                        title: '🚨 Missing Permission',
+                        description: `${message.author}, bot requires \`ADMINISTRATOR\` permission to be run.`
+                    }
+                ]
+            });
 
         const prefix = client.config.prefix;
         if (message.content.toLocaleLowerCase().indexOf(prefix) !== 0) return;
@@ -28,25 +30,29 @@ export default class CommandHandler {
         const cmd = client.registry.findCommand(command);
         if (!cmd) {
             if (client.config.unknownErrorMessage)
-                await message.channel.send(
-                    new MessageEmbed({
-                        color: '#D1D1D1',
-                        title: '🔎 Unknown Command',
-                        description: `${message.author}, type \`${client.config.prefix}help\` to see the command list.`
-                    })
-                );
+                await message.channel.send({
+                    embeds: [
+                        {
+                            color: '#D1D1D1',
+                            title: '🔎 Unknown Command',
+                            description: `${message.author}, type \`${client.config.prefix}help\` to see the command list.`
+                        }
+                    ]
+                });
             return;
         }
 
         if (cmd.info.enabled === false) return;
         if (cmd.info.onlyNsfw === true && !(message.channel as TextChannel).nsfw && !isUserDeveloper(client, message.author.id))
-            return await message.channel.send(
-                new MessageEmbed({
-                    color: '#EEB4D5',
-                    title: '🔞 Be Careful',
-                    description: `${message.author}, you can't use this command on non-nsfw channels.`
-                })
-            );
+            return await message.channel.send({
+                embeds: [
+                    {
+                        color: '#EEB4D5',
+                        title: '🔞 Be Careful',
+                        description: `${message.author}, you can't use this command on non-nsfw channels.`
+                    }
+                ]
+            });
 
         if (cmd.info.require) {
             if (cmd.info.require.developer && !isUserDeveloper(client, message.author.id)) return;
@@ -57,13 +63,15 @@ export default class CommandHandler {
                     else return perms.push(`\`${permission}\``);
                 });
                 if (perms.length)
-                    return await message.channel.send(
-                        new MessageEmbed({
-                            color: '#FCE100',
-                            title: '⚠️ Missing Permissions',
-                            description: `${message.author}, you must have these permissions to run this command.\n\n${perms.join('\n')}`
-                        })
-                    );
+                    return await message.channel.send({
+                        embeds: [
+                            {
+                                color: '#FCE100',
+                                title: '⚠️ Missing Permissions',
+                                description: `${message.author}, you must have these permissions to run this command.\n\n${perms.join('\n')}`
+                            }
+                        ]
+                    });
             }
         }
 
@@ -82,14 +90,16 @@ export default class CommandHandler {
                     await message.delete();
                     const timeLeft = (expirationTime - now) / 1000;
                     return await message.channel
-                        .send(
-                            new MessageEmbed({
-                                color: 'ORANGE',
-                                title: '⏰ Calm Down',
-                                description: `${message.author}, you must wait \`${formatSeconds(Math.floor(timeLeft))}\` to run this command.`
-                            })
-                        )
-                        .then(async msg => await msg.delete({ timeout: 3000 }).catch(() => {}));
+                        .send({
+                            embeds: [
+                                {
+                                    color: 'ORANGE',
+                                    title: '⏰ Calm Down',
+                                    description: `${message.author}, you must wait \`${formatSeconds(Math.floor(timeLeft))}\` to run this command.`
+                                }
+                            ]
+                        })
+                        .then(msg => setTimeout(async () => await msg.delete().catch(() => {}), 3000));
                 }
             }
 

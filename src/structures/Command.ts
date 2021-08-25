@@ -28,13 +28,15 @@ export default abstract class Command {
      */
     async onError(message: Message, error: any) {
         Logger.log('ERROR', `An error occurred in "${this.info.name}" command.\n${error}\n`, true);
-        await message.channel.send(
-            new MessageEmbed({
-                color: 'RED',
-                title: '💥 Oops...',
-                description: `${message.author}, an error occurred while running this command. Please try again later.`
-            })
-        );
+        await message.channel.send({
+            embeds: [
+                {
+                    color: 'RED',
+                    title: '💥 Oops...',
+                    description: `${message.author}, an error occurred while running this command. Please try again later.`
+                }
+            ]
+        });
     }
 
     /**

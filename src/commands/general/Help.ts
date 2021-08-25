@@ -50,7 +50,7 @@ export default class HelpCommand extends Command {
         });
 
         groups.forEach(group => embed.addField(`${group.name} Commands`, group.commands.map(x => `\`${x}\``).join(' ')));
-        await message.channel.send(embed);
+        await message.channel.send({ embeds: [embed] });
     }
 
     async run(message: Message, args: string[]) {
@@ -108,6 +108,6 @@ export default class HelpCommand extends Command {
             if (command.info.require.permissions) embed.addField('Permission Requirements', command.info.require.permissions.map(x => `\`${x}\``).join('\n'));
         }
 
-        await message.channel.send(embed);
+        await message.channel.send({ embeds: [embed] });
     }
 }

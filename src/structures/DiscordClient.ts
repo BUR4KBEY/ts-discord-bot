@@ -1,4 +1,4 @@
-import { Client } from 'discord.js';
+import { Client, IntentsString } from 'discord.js';
 
 import Registry from '../classes/Registry';
 import { IConfig } from '../utils/interfaces';
@@ -14,8 +14,8 @@ export default class DiscordClient extends Client {
      */
     readonly config: IConfig;
 
-    constructor() {
-        super();
+    constructor(intents: IntentsString[]) {
+        super({ intents });
 
         /**
          * Setting up client's config.

@@ -1,4 +1,4 @@
-import { Message, MessageEmbed } from 'discord.js';
+import { Message } from 'discord.js';
 
 import Logger from '../../classes/Logger';
 import Command from '../../structures/Command';
@@ -32,12 +32,14 @@ export default class RebootCommand extends Command {
             this.client.emit('ready');
 
             // Sending message to channel for feedback
-            await message.channel.send(
-                new MessageEmbed({
-                    color: 'GREEN',
-                    description: `${message.author}, bot rebooted successfully.`
-                })
-            );
+            await message.channel.send({
+                embeds: [
+                    {
+                        color: 'GREEN',
+                        description: `${message.author}, bot rebooted successfully.`
+                    }
+                ]
+            });
         });
     }
 }

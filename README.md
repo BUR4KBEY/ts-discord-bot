@@ -72,6 +72,12 @@ yarn install
 
 ---
 
+## 📌 Important
+
+You can change client intents from `src/client.ts`.
+
+---
+
 ## 🛠️ Creating Commands & Events
 
 ### Commands
@@ -149,20 +155,3 @@ If you want to cancel adding command cooldown to user:
     ```
 
 -   Call `cancelCooldown` function where you want to cancelling cooldown.
-
----
-
-## 📨 Inline Reply
-
--   Same usage with `message.reply`.
-
-```ts
-// Normal reply
-message.reply('Normal reply');
-
-// Inline reply
-message.lineReply('Inline reply');
-
-// Inline reply without mention
-message.lineReplyNoMention('Inline reply without mention');
-```

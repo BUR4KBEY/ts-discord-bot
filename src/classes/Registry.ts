@@ -68,7 +68,7 @@ export default class Registry {
         if (this.events.some(e => e.name === event.name)) throw new RegistryError(`A event with the name "${event.name}" is already registered.`);
 
         this.events.set(event.name, event);
-        this.client.on(event.name as keyof ClientEvents, event.run.bind(event));
+        this.client.on(event.name, event.run.bind(event));
         Logger.log('INFO', `Event "${event.name}" loaded.`);
     }
 
@@ -182,7 +182,7 @@ export default class Registry {
      * @param command Name or alias
      */
     findCommand(command: string): Command | undefined {
-        return this.commands.get(command) || this.commands.array().find(cmd => cmd.info.aliases && cmd.info.aliases.includes(command));
+        return this.commands.get(command) || [...this.commands.values()].find(cmd => cmd.info.aliases && cmd.info.aliases.includes(command));
     }
 
     /**
@@ -197,7 +197,7 @@ export default class Registry {
      * Returns all group names.
      */
     getAllGroupNames() {
-        return this.groups.keyArray();
+        return [...this.groups.keys()];
     }
 
     /**
@@ -223,7 +223,7 @@ export default class Registry {
      * Call this function while client is offline.
      */
     reregisterAll() {
-        const allEvents = this.events.keyArray();
+        const allEvents = [...this.events.keys()];
         allEvents.forEach(event => this.client.removeAllListeners(event));
         this.newCollections();
         this.registerAll();
