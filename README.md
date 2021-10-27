@@ -11,7 +11,7 @@ You can easily create more advanced, complex systems with this template.
 -   Easy to develop advanced and complex systems
     -   Because you have access to everything. You can change everything whatever you want.
 -   Command handler with error handling (`src/classes/CommandHandler.ts`)
-    -   Your bot doesn't crash on errors anymore. Errors will be logging to console.
+    -   Your bot doesn't crash on errors anymore. Errors will be logged to console.
 -   Cooldown, permission and nsfw channel checking on commands
     -   You can set up cooldowns, required permissions and requiring nsfw channel for each command uniquely.
 -   Auto command & event registration and checking (`src/classes/Registry.ts`)
